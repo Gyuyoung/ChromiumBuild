@@ -21,7 +21,7 @@ export GN_DEFINES=$GN_DEFINES' enable_nacl=false treat_warnings_as_errors=false'
 export GN_DEFINES=$GN_DEFINES' proprietary_codecs=true ffmpeg_branding="Chrome"'
 export GN_DEFINES=$GN_DEFINES' use_debug_fission=false linux_use_bundled_binutils=false clang_use_chrome_plugins=false cc_wrapper="icecc" ffmpeg_use_atomics_fallback=true enable_swiftshader=false '
 export GN_DEFINES=$GN_DEFINES' google_api_key="???" google_default_client_id="??.com" google_default_client_secret="??"'
-echo "GN_DEFINES:"$GN_DEFINES
+echo "GN_DEFINES: "$GN_DEFINES
 
 if [ "$1" == Debug ];
 then
