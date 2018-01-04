@@ -3,7 +3,7 @@
 if [ -z "$1" ]
 then
    echo "No build mode input"
-   echo "Usage : ./buildChromium.sh Debug or Release"
+   echo "Usage : ./buildChromium.sh Debug or Release [blink_tests]"
    exit 1
 fi
 
@@ -33,7 +33,7 @@ fi
 echo "============================================="
 timestamp=$(date +"%T")
 echo "[$timestamp] Start compiling Chromium on $1 mode"
-ninja -j 100 -C out/"$1" chrome
+ninja -j 100 -C out/"$1" chrome $2
 timestamp=$(date +"%T")
 echo "[$timestamp] Finish to compile Chromium!"
 echo "============================================="
