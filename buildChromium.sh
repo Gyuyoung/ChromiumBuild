@@ -41,4 +41,4 @@ end_timestamp=$(date +"%T")
 end_time=$(date +"%S")
 echo ""
 diffTime=`expr ${end_time} - ${start_time}`
-echo "[$end_timestamp] 3. Finish to compile Chromium (Elapsed time: $(($diffTime / 60)) minutes and $(($duration % 60)) seconds.)"
+echo "[$end_timestamp] 3. Finish to compile Chromium (Elapsed time: $(($diffTime / 60)) minutes and $(($diffTime % 60)) seconds.)"
