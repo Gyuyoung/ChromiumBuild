@@ -34,11 +34,8 @@ fi
 echo ""
 
 start_timestamp=$(date +"%T")
-start_time=$(date +"%S")
 echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode"
 ninja -j 100 -C out/"$1" chrome $2
 end_timestamp=$(date +"%T")
-end_time=$(date +"%S")
 echo ""
-diffTime=`expr ${end_time} - ${start_time}`
-echo "[$end_timestamp] 3. Finish to compile Chromium (Elapsed time: $(($diffTime / 60)) minutes and $(($diffTime % 60)) seconds.)"
+echo "[$end_timestamp] 3. Finish to compile Chromium."
