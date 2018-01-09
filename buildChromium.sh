@@ -35,6 +35,7 @@ then
   gn gen out/Release "--args=is_debug=false $GN_DEFINES"
 else
   echo "Undefined Debug or Release."
+  exit 0
 fi
 echo ""
 
