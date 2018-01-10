@@ -8,15 +8,17 @@ then
 fi
 
 export CCACHE_PREFIX=icecc
-export CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
 export CCACHE_BASEDIR=$HOME/chromium
+export CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
 export ICECC_CLANG_REMOTE_CPP=1
-export PATH=/usr/lib/ccache:/usr/lib/icecc/bin:$PATH
-export PATH=$CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin:$PATH
 
 # Please set your path to ICECC_VERSION and CHROMIUM_SRC.
 export ICECC_VERSION=$HOME/chromium/clang.tar.gz
 export CHROMIUM_SRC=$HOME/chromium/src
+
+export PATH=/usr/lib/ccache:/usr/lib/icecc/bin:$PATH
+export PATH=$CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin:$PATH
+
 
 export GN_DEFINES='is_component_build=true'
 export GN_DEFINES=$GN_DEFINES' enable_nacl=false treat_warnings_as_errors=false'
