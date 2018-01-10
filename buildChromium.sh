@@ -28,7 +28,7 @@ echo "[$timestamp] 1. Configuration"
 
 if [ "$1" == Debug ];
 then
-  export GN_DEFINES='dcheck_always_on=true'
+  export GN_DEFINES=$GN_DEFINES' dcheck_always_on=true'
   echo "GN_DEFINES: "$GN_DEFINES
   gn gen out/Debug "--args=is_debug=true $GN_DEFINES"
 elif [ "$1" == Release ];
