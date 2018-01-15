@@ -22,12 +22,25 @@ export PATH=$CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin:$PATH
 # Do gclient sync. 
 if [ "$1" == sync ];
 then
-  echo "Run gclient sync and new clang.tar.gz will be created."
+  export TMP_CLANG_DIR=tmp-clang
+  timestamp=$(date +"%T")
+  echo "[$timestamp] Start gclient sync."
   gclient sync
-  mkdir tmp-clang & cd tmp-clang
+  timestamp=$(date +"%T")
+  echo "[$timestamp] Finish gclient sync."
+
+  timestamp=$(date +"%T")
+  echo "[$timestamp] Create a new clang based on patched Chromium."
+  if [ ! -d $TMP_CLANG_DIR ]; then
+    mkdir $TMP_CLANG_DIR
+  fi
+  cd tmp-clang
   /usr/lib/icecc/icecc-create-env --clang $CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin/clang /usr/lib/icecc/compilerwrapper
   mv *.tar.gz $ICECC_VERSION
-  cd .. & rm -rf tmp-clang
+  cd ..
+  rm -rf $TMP_CLANG_DIR
+  timestamp=$(date +"%T")
+  echo "[$timestamp] Finish gclient sync and create the new clang.tar.gz."
   exit 0
 fi
 
