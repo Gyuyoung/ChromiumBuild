@@ -3,7 +3,7 @@
 if [ -z "$1" ]
 then
    echo "No build mode input"
-   echo "Usage : ./buildChromium.sh Debug or Release [blink_tests]"
+   echo "Usage : ./buildChromium.sh Debug or Release or sync [blink_tests]"
    exit 1
 fi
 
@@ -19,7 +19,20 @@ export CHROMIUM_SRC=$HOME/chromium/src
 export PATH=/usr/lib/ccache:/usr/lib/icecc/bin:$PATH
 export PATH=$CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin:$PATH
 
+# Do gclient sync. 
+if [ "$1" == sync ];
+then
+  echo "Run gclient sync and new clang.tar.gz will be created."
+  gclient sync
+  mkdir tmp-clang & cd tmp-clang
+  /usr/lib/icecc/icecc-create-env --clang $CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin/clang /usr/lib/icecc/compilerwrapper
+  mv *.tar.gz $ICECC_VERSION
+  cd .. & rm -rf tmp-clang
+  exit 0
+fi
 
+
+# Set Chromium gn build arguments.
 export GN_DEFINES='is_component_build=true'
 export GN_DEFINES=$GN_DEFINES' enable_nacl=false treat_warnings_as_errors=false'
 export GN_DEFINES=$GN_DEFINES' proprietary_codecs=true ffmpeg_branding="Chrome"'
@@ -28,6 +41,7 @@ export GN_DEFINES=$GN_DEFINES' google_api_key="???" google_default_client_id="??
 timestamp=$(date +"%T")
 echo "[$timestamp] 1. Configuration"
 
+# Start building Chromium using the gn configuration.
 if [ "$1" == Debug ];
 then
   export GN_DEFINES=$GN_DEFINES' dcheck_always_on=true'
