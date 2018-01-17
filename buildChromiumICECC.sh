@@ -18,6 +18,7 @@ export CHROMIUM_SRC=$HOME/chromium/src
 
 export PATH=/usr/lib/ccache:/usr/lib/icecc/bin:$PATH
 export PATH=$CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin:$PATH
+export CHROMIUM_BUILDTOOLS_PATH=$CHROMIUM_SRC/buildtools
 
 # Do gclient sync. 
 if [ "$1" == sync ];
@@ -43,7 +44,6 @@ then
   echo "[$timestamp] Finish gclient sync and create the new clang.tar.gz."
   exit 0
 fi
-
 
 # Set Chromium gn build arguments.
 export GN_DEFINES='is_component_build=true'
