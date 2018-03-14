@@ -3,7 +3,18 @@
 if [ "$#" -lt 1 ]
 then
    echo "No build mode input"
-   echo "Usage : ./buildChromium.sh Debug or Release or sync [blink_tests, unit_tests, browser_tests and so on]"
+   echo "Usage : buildChromiumICECC.sh [Build options] [Test modules] [Options]"
+   echo "Build options:"
+   echo "  Debug                  Debug build"
+   echo "  Release                Release build"
+   echo "Test modules:"
+   echo "  blink_tests            Blink Test "
+   echo "  content_browsertests   Content module browser test"
+   echo "  content_unittests      Content module unit test"
+   echo "  unit_tests             Chrome UI unit test"
+   echo "Options:"
+   echo " --sync                  buildChromiumICECC.sh --sync"
+   echo " --no-icecc              buildChromiumICECC.sh Debug or Release [Test modules] --no-icecc"
    exit 1
 fi
 
@@ -21,7 +32,7 @@ export PATH=$CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin:$PATH
 export CHROMIUM_BUILDTOOLS_PATH=$CHROMIUM_SRC/buildtools
 
 # Do gclient sync. 
-if [ "$1" == sync ];
+if [ "$1" == --sync ];
 then
   export TMP_CLANG_DIR=tmp-clang
   timestamp=$(date +"%T")
@@ -49,7 +60,7 @@ fi
 export GN_DEFINES='is_component_build=true'
 export GN_DEFINES=$GN_DEFINES' enable_nacl=false treat_warnings_as_errors=false'
 export GN_DEFINES=$GN_DEFINES' proprietary_codecs=true ffmpeg_branding="Chrome"'
-export GN_DEFINES=$GN_DEFINES' linux_use_bundled_binutils=false clang_use_chrome_plugins=false cc_wrapper="ccache" ffmpeg_use_atomics_fallback=true use_jumbo_build = true '
+export GN_DEFINES=$GN_DEFINES' linux_use_bundled_binutils=false clang_use_chrome_plugins=false cc_wrapper="ccache" ffmpeg_use_atomics_fallback=true use_jumbo_build=true '
 export GN_DEFINES=$GN_DEFINES' google_api_key="???" google_default_client_id="??.com" google_default_client_secret="??"'
 timestamp=$(date +"%T")
 echo "[$timestamp] 1. Configuration"
@@ -71,8 +82,15 @@ fi
 echo ""
 
 start_timestamp=$(date +"%T")
-echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode"
-ninja -j 100 -C out/"$1" chrome $2 $3 $4 $5
+if [[ $@ == *'-no-icecc'* ]]
+then
+  echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode without ICECC"
+  ninja -C out/"$1" chrome ${@:2:$(($#-2))}
+else
+  echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode with ICECC"
+  ninja -j 100 -C out/"$1" chrome ${@:2}
+fi
+
 end_timestamp=$(date +"%T")
 echo ""
 echo "[$end_timestamp] 3. Finish to compile Chromium."
