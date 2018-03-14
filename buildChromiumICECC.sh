@@ -1,17 +1,19 @@
 #!/bin/bash
 
-if [ "$#" -lt 1 ]
+if [ "$#" -lt 1 ] || [ "$1" == "--help" ] || [ "$1" == "-h" ]
 then
-   echo "No build mode input"
    echo "Usage : buildChromiumICECC.sh [Build options] [Test modules] [Options]"
+   echo ""
    echo "Build options:"
    echo "  Debug                  Debug build"
    echo "  Release                Release build"
+   echo ""
    echo "Test modules:"
    echo "  blink_tests            Blink Test "
    echo "  content_browsertests   Content module browser test"
    echo "  content_unittests      Content module unit test"
    echo "  unit_tests             Chrome UI unit test"
+   echo ""
    echo "Options:"
    echo " --sync                  buildChromiumICECC.sh --sync"
    echo " --no-icecc              buildChromiumICECC.sh Debug or Release [Test modules] --no-icecc"
