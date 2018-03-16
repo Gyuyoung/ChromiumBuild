@@ -34,7 +34,7 @@ export PATH=$CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin:$PATH
 export CHROMIUM_BUILDTOOLS_PATH=$CHROMIUM_SRC/buildtools
 
 # Do gclient sync. 
-if [ "$1" == --sync ];
+if [ "$1" == --sync ] || [ "$1" == sync ];
 then
   export TMP_CLANG_DIR=tmp-clang
   timestamp=$(date +"%T")
