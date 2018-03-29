@@ -77,6 +77,11 @@ elif [ "$1" == Release ];
 then
   echo "GN_DEFINES: "$GN_DEFINES
   gn gen out/Release "--args=is_debug=false $GN_DEFINES"
+elif [ "$1" == Ozone ];
+then
+  export GN_DEFINES=$GN_DEFINES' use_ozone=true enable_mus=true use_xkbcommon=true'
+  echo "GN_DEFINES: "$GN_DEFINES
+  gn gen out/Ozone "--args=is_debug=false $GN_DEFINES"
 else
   echo "Undefined Debug or Release."
   exit 0
