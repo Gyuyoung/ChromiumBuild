@@ -102,7 +102,7 @@ then
   ninja -C out/"$1" chrome ${@:2:$(($#-2))}
 else
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode with ICECC"
-  ninja -j 100 -C out/"$1" chrome ${@:2}
+  ninja -k 100 -j 100 -C out/"$1" chrome ${@:2}
 fi
 
 end_timestamp=$(date +"%T")
