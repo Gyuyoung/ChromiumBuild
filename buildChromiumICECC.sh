@@ -9,6 +9,7 @@ then
    echo "  Release                Release build"
    echo "  Ozone                  Ozone port build (Only release build)"
    echo "  Arm                    ARM port build (Only release build)"
+   echo "  ChromeOS               ChromeOS build (Only release build)"
    echo ""
    echo "Test modules:"
    echo "  blink_tests            Blink Test "
@@ -89,6 +90,11 @@ then
   export GN_DEFINES=$GN_DEFINES' target_cpu = "arm"'
   echo "GN_DEFINES: "$GN_DEFINES
   gn gen out/Arm "--args=is_debug=false $GN_DEFINES"
+elif [ "$1" == ChromeOS ];
+then
+  export GN_DEFINES=$GN_DEFINES' target_os="chromeos"'
+  echo "GN_DEFINES: "$GN_DEFINES
+  gn gen out/ChromeOS "--args=is_debug=false $GN_DEFINES"
 else
   echo "Undefined Debug or Release."
   exit 0
