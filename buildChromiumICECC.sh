@@ -94,7 +94,7 @@ elif [ "$1" == ChromeOS ];
 then
   export GN_DEFINES=$GN_DEFINES' target_os="chromeos"'
   echo "GN_DEFINES: "$GN_DEFINES
-  gn gen out/ChromeOS "--args=is_debug=false $GN_DEFINES"
+  gn gen out/ChromeOS "--args=is_debug=true $GN_DEFINES"
 else
   echo "Undefined Debug or Release."
   exit 0
