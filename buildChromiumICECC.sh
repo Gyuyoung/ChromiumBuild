@@ -36,6 +36,18 @@ export PATH=/usr/lib/ccache:/usr/lib/icecc/bin:$PATH
 export PATH=$CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin:$PATH
 export CHROMIUM_BUILDTOOLS_PATH=$CHROMIUM_SRC/buildtools
 
+# Please set your ChromiumBuild path.
+export CHROMIUM_BUILD_PATH=$HOME/github/ChromiumBuild
+
+timestamp=$(date +"%T")
+# Before running gclient sync, we need to apply a patch to change clang version and build warning.
+if [ -z "$(git diff build/config/compiler/BUILD.gn)" ]; then 
+  echo "[$timestamp] 0. Apply the build fix patch."
+  patch -p1 < $CHROMIUM_BUILD_PATH/patch/fix-icecc-build-error-and-warning.patch
+else
+  echo "[$timestamp] 0. Doesn't apply the build fix patch because it looks like it was already applied."
+fi
+
 # Do gclient sync. 
 if [ "$1" == --sync ] || [ "$1" == sync ];
 then
@@ -58,8 +70,11 @@ then
   rm -rf $TMP_CLANG_DIR
   timestamp=$(date +"%T")
   echo "[$timestamp] Finish gclient sync and create the new clang.tar.gz."
+  echo "[$timestamp] Remove the build fix patch."
+  git checkout build/config/compiler/BUILD.gn tools/clang/scripts/update.py
   exit 0
 fi
+
 
 # Set Chromium gn build arguments.
 export GN_DEFINES='is_component_build=true'
@@ -97,6 +112,8 @@ then
   gn gen out/ChromeOS "--args=is_debug=true $GN_DEFINES"
 else
   echo "Undefined Debug or Release."
+  echo "[$timestamp] 2. Remove the build fix patch."
+  git checkout build/config/compiler/BUILD.gn tools/clang/scripts/update.py
   exit 0
 fi
 echo ""
@@ -111,6 +128,9 @@ else
   ninja -k 100 -j 100 -C out/"$1" chrome ${@:2}
 fi
 
+echo "[$timestamp] 3. Remove the build fix patch."
+git checkout build/config/compiler/BUILD.gn tools/clang/scripts/update.py
+
 end_timestamp=$(date +"%T")
 echo ""
-echo "[$end_timestamp] 3. Finish to compile Chromium."
+echo "[$end_timestamp] 4. Finish to compile Chromium."

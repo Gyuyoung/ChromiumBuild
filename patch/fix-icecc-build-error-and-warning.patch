@@ -1,0 +1,26 @@
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index 946fb592c2f0..115b59d680ec 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -1490,7 +1490,7 @@ config("default_warnings") {
+           "-Wno-ignored-pragma-optimize",
+ 
+           # TODO(hans): https://crbug.com/890307
+-          "-Wno-defaulted-function-deleted",
++#          "-Wno-defaulted-function-deleted",
+         ]
+       }
+     }
+diff --git a/tools/clang/scripts/update.py b/tools/clang/scripts/update.py
+index b557ffb9e995..e8a1feddd415 100755
+--- a/tools/clang/scripts/update.py
++++ b/tools/clang/scripts/update.py
+@@ -27,7 +27,7 @@ import zipfile
+ # Do NOT CHANGE this if you don't know what you're doing -- see
+ # https://chromium.googlesource.com/chromium/src/+/master/docs/updating_clang.md
+ # Reverting problematic clang rolls is safe, though.
+-CLANG_REVISION = '344066'
++CLANG_REVISION = '338452'
+ 
+ use_head_revision = bool(os.environ.get('LLVM_FORCE_HEAD_REVISION', '0')
+                          in ('1', 'YES'))
