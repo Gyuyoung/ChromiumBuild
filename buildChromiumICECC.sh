@@ -37,13 +37,13 @@ export PATH=$CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin:$PATH
 export CHROMIUM_BUILDTOOLS_PATH=$CHROMIUM_SRC/buildtools
 
 # Please set your ChromiumBuild path.
-export CHROMIUM_ICECC_BUILD_SCRIPT_PATH=$HOME/github/ChromiumBuild
+export CHROMIUM_BUILD_PATH=$HOME/github/ChromiumBuild
 
 timestamp=$(date +"%T")
 # Before running gclient sync, we need to apply a patch to change clang version and build warning.
 if [ -z "$(git diff build/config/compiler/BUILD.gn)" ]; then 
   echo "[$timestamp] 0. Apply the build fix patch."
-  patch -p1 < $CHROMIUM_ICECC_BUILD_SCRIPT_PATH/patch/fix-icecc-build-error-and-warning.patch
+  patch -p1 < $CHROMIUM_BUILD_PATH/patch/fix-icecc-build-error-and-warning.patch
 else
   echo "[$timestamp] 0. Doesn't apply the build fix patch because it looks like it was already applied."
 fi
