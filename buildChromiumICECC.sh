@@ -9,7 +9,8 @@ then
    echo "  Release                Release build"
    echo "  Ozone                  Ozone port build (Only release build)"
    echo "  Arm                    ARM port build (Only release build)"
-   echo "  ChromeOS               ChromeOS build (Only release build)"
+   echo "  ChromeOS               ChromeOS build (Only debug build)"
+   echo "  Android                Android build (Only debug build)"
    echo ""
    echo "Test modules:"
    echo "  blink_tests            Blink Test "
@@ -32,8 +33,8 @@ export ICECC_CLANG_REMOTE_CPP=1
 export ICECC_VERSION=$HOME/chromium/clang.tar.gz
 export CHROMIUM_SRC=$HOME/chromium/src
 
-export PATH=/usr/lib/ccache:/usr/lib/icecc/bin:$PATH
 export PATH=$CHROMIUM_SRC/third_party/llvm-build/Release+Asserts/bin:$PATH
+export PATH=$CHROMIUM_SRC/native_client/toolchain/linux_x86/pnacl_newlib/bin/pnacl-clang:$PATH
 export CHROMIUM_BUILDTOOLS_PATH=$CHROMIUM_SRC/buildtools
 
 # Do gclient sync. 
@@ -80,6 +81,10 @@ elif [ "$1" == Release ];
 then
   echo "GN_DEFINES: "$GN_DEFINES
   gn gen out/Release "--args=is_debug=false $GN_DEFINES"
+elif [ "$1" == GCC ];
+then
+  echo "GN_DEFINES: "$GN_DEFINES
+  gn gen out/GCC "--args=is_debug=true ible_nacl=false treat_warnings_as_errors=falses_clang=false linux_use_bundled_binutils=false clang_use_chrome_plugins=false ffmpeg_use_atomics_fallback=true use_jumbo_build=true "
 elif [ "$1" == Ozone ];
 then
   export GN_DEFINES=$GN_DEFINES' use_ozone=true enable_mus=true use_xkbcommon=true'
@@ -95,6 +100,12 @@ then
   export GN_DEFINES=$GN_DEFINES' target_os="chromeos"'
   echo "GN_DEFINES: "$GN_DEFINES
   gn gen out/ChromeOS "--args=is_debug=true $GN_DEFINES"
+elif [ "$1" == Android ];
+then
+  export GN_DEFINES=$GN_DEFINES' target_os="android" target_cpu="arm64"'
+  echo "GN_DEFINES: "$GN_DEFINES
+  gclient runhooks
+  gn gen out/Android "--args=is_debug=true $GN_DEFINES"
 else
   echo "Undefined Debug or Release."
   exit 0
@@ -106,6 +117,10 @@ if [[ $@ == *'-no-icecc'* ]]
 then
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode without ICECC"
   ninja -C out/"$1" chrome ${@:2:$(($#-2))}
+elif [ "$1" == Android ];
+then
+  echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode with ICECC"
+  ninja -k 100 -j 100 -C out/"$1" chrome_public_apk
 else
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode with ICECC"
   ninja -k 100 -j 100 -C out/"$1" chrome ${@:2}
