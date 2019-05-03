@@ -20,7 +20,6 @@ then
    echo ""
    echo "Options:"
    echo " --sync                  buildChromiumICECC.sh --sync"
-   echo " --no-icecc              buildChromiumICECC.sh Debug or Release [Test modules] --no-icecc"
    exit 1
 fi
 
@@ -113,17 +112,13 @@ fi
 echo ""
 
 start_timestamp=$(date +"%T")
-if [[ $@ == *'-no-icecc'* ]]
-then
-  echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode without ICECC"
-  ninja -C out/"$1" chrome ${@:2:$(($#-2))}
-elif [ "$1" == Android ];
+if [ "$1" == Android ];
 then
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode with ICECC"
-  ninja -k 100 -j 100 -C out/"$1" chrome_public_apk
+  time ninja -k 100 -j 100 -C out/"$1" chrome_public_apk
 else
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode with ICECC"
-  ninja -k 100 -j 100 -C out/"$1" chrome ${@:2}
+  time ninja -k 100 -j 100 -C out/"$1" chrome ${@:2}
 fi
 
 end_timestamp=$(date +"%T")
