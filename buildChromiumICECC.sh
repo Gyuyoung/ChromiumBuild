@@ -118,7 +118,13 @@ then
   time ninja -k 100 -j 100 -C out/"$1" chrome_public_apk
 else
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode with ICECC"
-  time ninja -k 100 -j 100 -C out/"$1" chrome ${@:2}
+  if [ "$2" == all_tests ]
+  then
+    export ALL_TESTS='unit_tests components_unittests browser_tests cc_unittests blink_tests app_shell_unittests services_unittests content_browsertests webkit_unit_tests'
+    time ninja -k 100 -j 100 -C out/"$1" chrome $ALL_TESTS
+  else
+    time ninja -k 100 -j 100 -C out/"$1" chrome ${@:2}
+  fi
 fi
 
 end_timestamp=$(date +"%T")
