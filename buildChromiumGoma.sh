@@ -46,7 +46,7 @@ fi
 # Set Chromium gn build arguments.
 timestamp=$(date +"%T")
 echo "[$timestamp] 1. Configuration"
-export GN_DEFINES='is_component_build=true use_jumbo_build=true use_goma=false'
+export GN_DEFINES='is_component_build=true use_jumbo_build=true use_goma=true'
 
 # Start building Chromium using the gn configuration.
 if [ "$1" == Debug ];
