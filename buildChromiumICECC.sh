@@ -13,6 +13,7 @@ then
    echo "  Android                Android build (Only debug build)"
    echo ""
    echo "Test modules:"
+   echo "  all_tests              All Tests"
    echo "  blink_tests            Blink Test "
    echo "  content_browsertests   Content module browser test"
    echo "  content_unittests      Content module unit test"
@@ -83,7 +84,7 @@ then
 elif [ "$1" == GCC ];
 then
   echo "GN_DEFINES: "$GN_DEFINES
-  gn gen out/GCC "--args=is_debug=true ible_nacl=false treat_warnings_as_errors=falses_clang=false linux_use_bundled_binutils=false clang_use_chrome_plugins=false ffmpeg_use_atomics_fallback=true use_jumbo_build=true "
+  gn gen out/GCC "--args=is_debug=false enable_nacl=false treat_warnings_as_errors=false is_clang=false linux_use_bundled_binutils=false clang_use_chrome_plugins=false ffmpeg_use_atomics_fallback=true use_jumbo_build=true "
 elif [ "$1" == Ozone ];
 then
   export GN_DEFINES=$GN_DEFINES' use_ozone=true enable_mus=true use_xkbcommon=true'
