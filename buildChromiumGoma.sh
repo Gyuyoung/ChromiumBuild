@@ -82,6 +82,7 @@ fi
 ulimit -n 4096
 
 JOBS=2000
+ALL_TESTS='unit_tests components_unittests browser_tests cc_unittests blink_tests app_shell_unittests services_unittests content_browsertests content_unittests webkit_unit_tests viz_unittests'
 
 start_timestamp=$(date +"%T")
 if [ "$1" == Android ];
@@ -94,7 +95,6 @@ else
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode using Goma"
   if [ "$2" == all_tests ]
   then
-    export ALL_TESTS='unit_tests components_unittests browser_tests cc_unittests blink_tests app_shell_unittests services_unittests content_browsertests content_unittests webkit_unit_tests'
     time autoninja -j $JOBS -C out/"$1" chrome $ALL_TESTS
   else
     time autoninja -j $JOBS -C out/"$1" chrome ${@:2}
