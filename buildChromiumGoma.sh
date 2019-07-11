@@ -37,7 +37,7 @@ if [ "$1" == --sync ] || [ "$1" == sync ];
 then
   timestamp=$(date +"%T")
   echo "[$timestamp] Start gclient sync."
-  gclient sync
+  gclient sync -D
   timestamp=$(date +"%T")
   echo "[$timestamp] Finish gclient sync."
   exit 0
