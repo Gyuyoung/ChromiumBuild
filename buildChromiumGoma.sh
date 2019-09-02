@@ -46,7 +46,7 @@ fi
 # Set Chromium gn build arguments.
 timestamp=$(date +"%T")
 echo "[$timestamp] 1. Configuration"
-export GN_DEFINES='is_component_build=true use_jumbo_build=true use_goma=true'
+export GN_DEFINES='is_component_build=true use_jumbo_build=false use_goma=true'
 
 # Start building Chromium using the gn configuration.
 if [ "$1" == Debug ];
@@ -70,7 +70,7 @@ then
   gn gen out/GCC "--args=is_debug=true $GN_DEFINES"
 elif [ "$1" == Android ];
 then
-  export GN_DEFINES=$GN_DEFINES' target_os="android" target_cpu="arm64"'
+  export GN_DEFINES=$GN_DEFINES' target_os="android" notouch_build=true'
   echo "GN_DEFINES: "$GN_DEFINES
   gclient runhooks
   gn gen out/Android "--args=is_debug=true $GN_DEFINES"
