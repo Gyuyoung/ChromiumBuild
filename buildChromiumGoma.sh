@@ -74,6 +74,11 @@ then
   echo "GN_DEFINES: "$GN_DEFINES
   gclient runhooks
   gn gen out/Android "--args=is_debug=true $GN_DEFINES"
+elif [ "$1" == Ozone ];
+then
+  export GN_DEFINES=$GN_DEFINES' use_ozone=true use_xkbcommon=true use_system_minigbm=true use_system_libdrm=true'
+  echo "GN_DEFINES: "$GN_DEFINES
+  gn gen out/Ozone "--args=is_debug=true $GN_DEFINES"
 else
   echo "Undefined Debug or Release."
   exit 0
