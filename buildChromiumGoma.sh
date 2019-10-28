@@ -25,10 +25,13 @@ then
    exit 1
 fi
 
+export GOMA_LOCAL_OUTPUT_CACHE_DIR=/home/gyuyoung/.goma-cache
+export GOMA_LOCAL_OUTPUT_CACHE_MAX_CACHE_AMOUNT_IN_MB=10000
+
 # Start Goma client service.
 if [ "$1" == --start-goma-service ] || [ "$1" == start-goma-service ];
 then
-  ~/goma/goma_ctl.py ensure_start
+  ~/goma/goma_ctl.py restart
   exit 0
 fi
 
@@ -70,7 +73,7 @@ then
   gn gen out/GCC "--args=is_debug=true $GN_DEFINES"
 elif [ "$1" == Android ];
 then
-  export GN_DEFINES=$GN_DEFINES' target_os="android" notouch_build=true'
+  export GN_DEFINES=$GN_DEFINES' target_os="android"'
   echo "GN_DEFINES: "$GN_DEFINES
   gclient runhooks
   gn gen out/Android "--args=is_debug=true $GN_DEFINES"
@@ -94,7 +97,7 @@ if [ "$1" == Android ];
 then
   echo ""
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode using Goma"
-  time autoninja -j $JOBS -C out/"$1" chrome_public_apk
+  time autoninja -j $JOBS -C out/"$1" chrome_public_apk ${@:2}
 else
   echo ""
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode using Goma"
