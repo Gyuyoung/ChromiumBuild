@@ -66,6 +66,11 @@ then
   export GN_DEFINES=$GN_DEFINES' target_os="chromeos"'
   echo "GN_DEFINES: "$GN_DEFINES
   gn gen out/ChromeOS "--args=is_debug=true $GN_DEFINES"
+elif [ "$1" == Chromecast ];
+then
+  export GN_DEFINES=$GN_DEFINES' is_chromecast=true'
+  echo "GN_DEFINES: "$GN_DEFINES
+  gn gen out/Chromecast "--args=is_debug=true $GN_DEFINES"
 elif [ "$1" == GCC ];
 then
   export GN_DEFINES=$GN_DEFINES' is_clang=false'
@@ -89,8 +94,8 @@ fi
 
 ulimit -n 4096
 
-JOBS=2000
-ALL_TESTS='unit_tests components_unittests browser_tests cc_unittests blink_tests app_shell_unittests services_unittests content_browsertests content_unittests webkit_unit_tests viz_unittests media_service_unittests'
+JOBS=1000
+ALL_TESTS='unit_tests components_unittests browser_tests cc_unittests blink_tests app_shell_unittests services_unittests content_browsertests content_unittests webkit_unit_tests viz_unittests media_unittests'
 
 start_timestamp=$(date +"%T")
 if [ "$1" == Android ];
@@ -98,6 +103,11 @@ then
   echo ""
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode using Goma"
   time autoninja -j $JOBS -C out/"$1" chrome_public_apk ${@:2}
+elif [ "$1" == Chromecast ];
+then
+  echo ""
+  echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode using Goma"
+  time autoninja -j $JOBS -C out/"$1" cast_shell ${@:2}
 else
   echo ""
   echo "[$start_timestamp] 2. Start compiling Chromium on $1 mode using Goma"
