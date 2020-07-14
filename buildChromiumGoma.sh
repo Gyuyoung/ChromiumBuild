@@ -121,5 +121,5 @@ fi
 
 end_timestamp=$(date +"%T")
 echo ""
-echo "[$end_timestamp] 3. Finish to compile Chromium."
+echo "[$end_timestamp] 3. Finish to compile Chromium!"
 
